@@ -103,13 +103,17 @@ describe('The Electricity meter', function () {
     const electricityMeters = ElectricityMeters(pool);
     const streetMeter = await electricityMeters.streetMeters(8);
     assert.deepStrictEqual(
-      [
-        { street_number: '8', balance: '50.00' },
-        { street_number: '6', balance: '50.00' },
-        { street_number: '1', balance: '50.00' },
-      ],
+      [{ street_number: '6', balance: '50.00' }],
       streetMeter
     );
+  });
+
+  it('should be able to use electricity', async function () {
+    const electricityMeters = ElectricityMeters(pool);
+    const appliances = await electricityMeters.useElectricity(20.0, 1);
+    const getUpdate = await electricityMeters.getUpdate(1);
+    // console.log(appliances);
+    assert.equal(30.0, getUpdate);
   });
 
   it('should be able to topup electricity', async function () {
@@ -117,13 +121,6 @@ describe('The Electricity meter', function () {
     const appliances = await electricityMeters.topupElectricity(3, 20);
     const meterData = await electricityMeters.meterData(3);
     assert.equal(70, meterData.balance);
-  });
-
-  it('should be able to use electricity', async function () {
-    const electricityMeters = ElectricityMeters(pool);
-    const appliances = await electricityMeters.useElectricity(20, 2);
-    console.log(appliances);
-    assert.equal(30, appliances);
   });
 
   this.afterAll(function () {

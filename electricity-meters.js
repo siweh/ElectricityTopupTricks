@@ -47,6 +47,7 @@ module.exports = function (pool) {
       `update electricity_meter set balance = balance + $1 where street_number = $2`,
       [units, meterId]
     );
+
     //console.log(results);
     return results.rows;
   }
