@@ -43,7 +43,7 @@ app.get('/streets', async function (req, res) {
 
 app.get('/appliances', async function (req, res) {
   const appliances = await electricityMeters.appliances();
-  console.log(appliances);
+  //console.log(appliances);
   res.render('appliances', {
     appliances,
   });
@@ -57,12 +57,11 @@ app.get('/meter/:street_id', async function (req, res) {
   // in there loop over all the meters and show them on the screen.
   // show the street number and name and the meter balance
 
-  const streetMeter = await electricityMeters.streetMeters(req.body.name);
-  //console.log(req.body);
+  const streetMeter = await electricityMeters.streetMeters(
+    req.params.street_id
+  );
+  console.log(req.params.street_id);
   console.log(streetMeter);
-  res.render('streets', {
-    streetMeter,
-  });
   res.render('street_meters', {
     streetMeter,
   });

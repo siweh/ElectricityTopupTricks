@@ -9,10 +9,23 @@
   <body>
     <div class='containers'>
       <a href='/streets'><button>Back</button></a>
-      {{#each streetMeter}}
-        {{street_number}}
-        <br />
-      {{/each}}
+      <table>
+        <tr>
+          <th>Street number</th>
+          <th>Balance</th>
+        </tr>
+        {{#each streetMeter}}
+          <tr>
+            <td>
+              {{street_number}}
+            </td>
+            <td>
+              {{balance}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+
     </div>
   </body>
 </html>

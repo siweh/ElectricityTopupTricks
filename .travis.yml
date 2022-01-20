@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - "16.6.1"
+
+env:
+   - DATABASE_URL=postgresql://localhost:5432/topups_db
+
+before_script:
+  - psql -c 'create database topups_db;' -U postgres
+  - psql -U postgres -d topups_db -a -f sql/db.sql
+
+services: 
+  - postgresql
