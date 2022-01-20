@@ -1,14 +1,18 @@
 <h2>Streets</h2>
 
 <table>
-{{#each streets}}
-<tr>
-	<td>
-		{{name}}
-	</td>
-	<td>
-		<a href="/meters/{{id}}">Meters in street</a>
-	</td>
-</tr>
-{{/each}}
+  {{#each streets}}
+    <tr>
+      <td>
+        {{name}}
+      </td>
+      <td>
+        <a href='/meter/{{:id}}'>Meters in street</a>
+      </td>
+    </tr>
+  {{/each}}
 </table>
+<br />
+<br />
+
+<a href='/appliances'><button>Show appliances</button></a>
