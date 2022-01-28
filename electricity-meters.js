@@ -41,7 +41,7 @@ module.exports = function (pool) {
         `select * from electricity_meter join street on street.id =electricity.street_id where street_id = $1`,
         [meterId]
       );
-      console.log(results);
+      //console.log(results);
       return results.rows;
     } catch (error) {
       console.log(error);
@@ -54,10 +54,10 @@ module.exports = function (pool) {
         `update electricity_meter set balance = balance - $1 where street_id = $2`,
         [units, meterId]
       );
-      console.log(results);
+      //console.log(results);
       return results.rows;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   }
 
@@ -69,11 +69,20 @@ module.exports = function (pool) {
         [units, meterId]
       );
 
-      //console.log(results);
+      console.log(results.rows);
       return results.rows;
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function getUpdatedUnits(meterId) {
+    let results = await pool.query(
+      `select balance, street_id from electricity_meter where street_id = $1`,
+      [meterId]
+    );
+    //console.log(results);
+    return results.rows;
   }
 
   // return the data for a given balance
@@ -89,5 +98,6 @@ module.exports = function (pool) {
     topupElectricity,
     meterData,
     useElectricity,
+    getUpdatedUnits,
   };
 };

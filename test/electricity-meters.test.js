@@ -3,19 +3,18 @@ const pg = require('pg');
 const Pool = pg.Pool;
 const ElectricityMeters = require('../electricity-meters');
 
-let useSSL = false;
-let local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-  useSSL = true;
-}
-const connectionString =
-  process.env.DATABASE_URL || 'postgresql://localhost:5432/topups_db';
+// let useSSL = false;
+// let local = process.env.LOCAL || false;
+// if (process.env.DATABASE_URL && !local) {
+//   useSSL = true;
+// }
+const connectionString = 'postgresql://localhost:5432/topups_db';
 
 const pool = new Pool({
   connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
 });
 
 describe('The Electricity meter', function () {
@@ -118,17 +117,29 @@ describe('The Electricity meter', function () {
 
   it('should be able to use electricity', async function () {
     const electricityMeters = ElectricityMeters(pool);
-    const appliances = await electricityMeters.useElectricity(20.0, 1);
-    const getUpdate = await electricityMeters.getUpdate(1);
-    // console.log(appliances);
-    assert.equal(30.0, getUpdate);
+    await electricityMeters.useElectricity(20.0, 1);
+    assert.deepEqual(
+      [
+        { balance: 50.0, street_id: 1 },
+        { balance: 50.0, street_id: 1 },
+        { balance: 50.0, street_id: 1 },
+      ],
+      await electricityMeters.getUpdatedUnits(1)
+    );
   });
 
   it('should be able to topup electricity', async function () {
     const electricityMeters = ElectricityMeters(pool);
-    const appliances = await electricityMeters.topupElectricity(3, 20);
-    const meterData = await electricityMeters.meterData(3);
-    assert.equal(70, meterData.balance);
+    await electricityMeters.topupElectricity(20, 2);
+
+    assert.deepEqual(
+      [
+        { balance: 50.0, street_id: 2 },
+        { balance: 50.0, street_id: 2 },
+        { balance: 50.0, street_id: 2 },
+      ],
+      await electricityMeters.getUpdatedUnits(2)
+    );
   });
 
   this.afterAll(function () {

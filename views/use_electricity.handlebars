@@ -1,0 +1,45 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='/style.css' />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class='containers'>
+      <h2>Use electricity </h2>
+      <table>
+        <tr>
+          <th>Balance</th>
+          <th>Meter No.</th>
+        </tr>
+        {{#each meters}}
+          <tr>
+            <td>
+              {{balance}}
+            </td>
+            <td>
+              {{street_id}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      <br />
+      <form action='/meter/use/{{id}}' method='post'>
+        <label for='appliance'>Choose appliance</label>
+        <select name='appliance' class='appliance'>
+          <option value='all' name='allAppliances'>Select appliance</option>
+          <option value='1' name='appl1'>Stove</option>
+          <option value='2' name='appl2'>TV</option>
+          <option value='3' name='appl3'>Heater</option>
+          <option value='4' name='appl4'>Fridge</option>
+          <option value='5' name='appl5'>Kettle</option>
+        </select>
+        <br />
+        <br />
+        <button type='submit' class='show-appliance'>Add</button>
+      </form>
+    </div>
+  </body>
+</html>
